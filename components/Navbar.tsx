@@ -1,27 +1,15 @@
 "use client";
 
-type NavbarProps = {
-  setCategory: (value: string) => void;
-};
+import { useRouter } from "next/navigation";
 
-const Navbar = ({ setCategory }: NavbarProps) => {
+export default function Navbar() {
+  const router = useRouter();
+
   return (
-    <div className="flex w-full bg-cyan-500 p-3 justify-center gap-10 text-white">
-      <button
-        onClick={() => setCategory("movie")}
-        className="font-bold hover:text-gray-200"
-      >
-        Movies
-      </button>
+    <div className="flex gap-4 p-4 bg-gray-800 text-white">
+      <button onClick={() => router.push("/movies")}>Movies</button>
 
-      <button
-        onClick={() => setCategory("tv")}
-        className="font-bold hover:text-gray-200"
-      >
-        TV Series
-      </button>
+      <button onClick={() => router.push("/tv_shows")}>TV Shows</button>
     </div>
   );
-};
-
-export default Navbar;
+}

@@ -11,14 +11,19 @@ export default function Home() {
   const [movies, setMovies] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-
-  // ⭐ NEW: pagination state
   const [page, setPage] = useState(1);
 
   const pathname = usePathname();
   const router = useRouter();
 
-  const category = pathname === "/tv_shows" ? "tv" : "movie";
+  // ✅ FIXED: 3 states (all | movie | tv)
+  let category: "all" | "movie" | "tv" = "all";
+
+  if (pathname === "/movies") {
+    category = "movie";
+  } else if (pathname === "/tv_shows") {
+    category = "tv";
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,10 +33,11 @@ export default function Home() {
 
       if (category === "movie") {
         url = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&sort_by=popularity.desc&page=${page}`;
-        // url = `https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}&page=${page}`;
-      } else {
-        // url = `https://api.themoviedb.org/3/trending/tv/week?api_key=${API_KEY}&page=${page}`;
+      } else if (category === "tv") {
         url = `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&sort_by=popularity.desc&page=${page}`;
+      } else {
+        // ✅ Default = trending all
+        url = `https://api.themoviedb.org/3/trending/all/week?api_key=${API_KEY}&page=${page}`;
       }
 
       try {
@@ -48,13 +54,16 @@ export default function Home() {
     fetchData();
   }, [category, page]);
 
+  // ✅ FIXED: support "all"
   const setCategory = (newCategory: string) => {
-    setPage(1); // reset page when switching category
+    setPage(1);
 
     if (newCategory === "movie") {
       router.push("/movies");
-    } else {
+    } else if (newCategory === "tv") {
       router.push("/tv_shows");
+    } else {
+      router.push("/"); // ⭐ default page
     }
   };
 
@@ -66,8 +75,13 @@ export default function Home() {
     <div>
       <Navbar setCategory={setCategory} />
 
-      <h1 className="text-xl font-bold mb-4 text-center bg-red400">
-        {category === "movie" ? "Movies" : "TV Series"}
+      {/* ✅ Dynamic title */}
+      <h1 className="text-xl font-bold mb-4 text-center">
+        {category === "movie"
+          ? "Movies"
+          : category === "tv"
+            ? "TV Series"
+            : "Trending This Week"}
       </h1>
 
       {/* 🔍 SEARCH */}
@@ -87,7 +101,7 @@ export default function Home() {
       ) : (
         <>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {/* {filteredMovies.map((item: any) => (
+            {filteredMovies.map((item: any) => (
               <div key={item.id} className="text-sm">
                 <img
                   className="rounded"
@@ -96,10 +110,10 @@ export default function Home() {
                 />
                 <p className="mt-2">{item.title || item.name}</p>
               </div>
-            ))} */}
+            ))}
           </div>
 
-          {/* 🔥 PAGINATION BUTTONS */}
+          {/* 🔥 PAGINATION */}
           <div className="flex justify-center items-center gap-4 mt-6">
             <button
               onClick={() => setPage((p) => Math.max(p - 1, 1))}

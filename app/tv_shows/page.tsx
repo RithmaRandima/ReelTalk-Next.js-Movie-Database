@@ -1,5 +1,5 @@
-import Home from "../page";
+import { redirect } from "next/navigation";
 
-export default function TVShowsPage() {
-  return <Home />;
+export default function TvIndex() {
+  redirect("/tv_shows/trending");
 }

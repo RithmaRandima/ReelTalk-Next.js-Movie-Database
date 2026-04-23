@@ -1,5 +1,5 @@
-import Home from "../page";
+import { redirect } from "next/navigation";
 
-export default function MoviesPage() {
-  return <Home />;
+export default function MoviesIndex() {
+  redirect("/movies/trending");
 }
