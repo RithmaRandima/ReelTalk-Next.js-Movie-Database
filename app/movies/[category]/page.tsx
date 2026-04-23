@@ -85,7 +85,7 @@ export default function MoviesPage() {
   );
 
   return (
-    <div className="relative">
+    <div className="relative pb-10">
       <div className="pt-19">
         <Navbar />
       </div>
@@ -139,11 +139,37 @@ export default function MoviesPage() {
         </div>
       )}
 
-      {/* PAGINATION */}
-      <div className="flex justify-center gap-4 p-4">
-        <button onClick={() => setPage((p) => Math.max(p - 1, 1))}>Prev</button>
-        <span>Page {page}</span>
-        <button onClick={() => setPage((p) => p + 1)}>Next</button>
+      {/* 🔥 PAGINATION */}
+      <div className="flex justify-center items-center gap-4 mt-12">
+        <button
+          onClick={() => setPage((p) => Math.max(p - 1, 1))}
+          disabled={page === 1}
+          className="px-4 py-2 rounded-full text-sm
+               bg-white border border-gray-300 text-black
+               hover:bg-gray-100
+               disabled:opacity-40 disabled:cursor-not-allowed
+               transition shadow-sm"
+        >
+          Previous
+        </button>
+
+        {/* Page indicator styled like a button */}
+        <div
+          className="                 
+               "
+        >
+          Page {page}
+        </div>
+
+        <button
+          onClick={() => setPage((p) => p + 1)}
+          className="px-4 py-2 rounded-full text-sm
+               bg-white border border-gray-300 text-black
+               hover:bg-gray-100
+               transition shadow-sm"
+        >
+          Next
+        </button>
       </div>
     </div>
   );

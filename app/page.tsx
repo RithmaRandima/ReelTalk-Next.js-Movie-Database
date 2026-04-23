@@ -90,7 +90,7 @@ export default function Home() {
   );
 
   return (
-    <div>
+    <div className="pb-10">
       <HeroSection movies={movies} setCategory={setCategory} />
       <Navbar />
       {/* ✅ Dynamic title */}
@@ -142,19 +142,33 @@ export default function Home() {
             </div>
 
             {/* 🔥 PAGINATION */}
-            <div className="flex justify-center items-center gap-4 mt-6">
+            <div className="flex justify-center items-center gap-4 mt-12">
               <button
                 onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                disabled={page === 1}
+                className="px-4 py-2 rounded-full text-sm
+               bg-white border border-gray-300 text-black
+               hover:bg-gray-100
+               disabled:opacity-40 disabled:cursor-not-allowed
+               transition shadow-sm"
               >
                 Previous
               </button>
 
-              <span className="font-bold">Page {page}</span>
+              {/* Page indicator styled like a button */}
+              <div
+                className="                 
+               "
+              >
+                Page {page}
+              </div>
 
               <button
                 onClick={() => setPage((p) => p + 1)}
-                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                className="px-4 py-2 rounded-full text-sm
+               bg-white border border-gray-300 text-black
+               hover:bg-gray-100
+               transition shadow-sm"
               >
                 Next
               </button>

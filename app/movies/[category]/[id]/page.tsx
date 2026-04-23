@@ -7,12 +7,50 @@ const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
 type MovieDetail = {
   backdrop_path?: string;
-  genres: string[];
-  original_title?: string;
   poster_path?: string;
+
+  title?: string;
+  original_title?: string;
   name?: string;
+
   overview?: string;
+  tagline?: string;
+
   vote_average?: number;
+  vote_count?: number;
+
+  runtime?: number;
+  status?: string;
+
+  release_date?: string;
+  popularity?: number;
+
+  budget?: number;
+  revenue?: number;
+
+  original_language?: string;
+  homepage?: string;
+  imdb_id?: string;
+
+  origin_country?: string[];
+  production_countries?: { name: string }[];
+
+  spoken_languages?: { name: string }[];
+
+  genres?: { id: number; name: string }[];
+
+  credits?: {
+    cast?: any[];
+    crew?: any[];
+  };
+
+  videos?: {
+    results?: { key: string }[];
+  };
+
+  similar?: {
+    results?: any[];
+  };
 };
 
 export default function TvDetailPage() {
@@ -33,8 +71,6 @@ export default function TvDetailPage() {
   }, [id]);
 
   if (!data) return <p>Loading...</p>;
-
-  console.log(data);
 
   const tags = data?.genres;
   const country =
@@ -204,9 +240,9 @@ export default function TvDetailPage() {
               </h3>
 
               {data.credits?.crew
-                ?.filter((c: any) => c.job === "Director")
+                ?.filter((c) => c.job === "Director")
                 .slice(0, 1)
-                .map((d: any) => (
+                .map((d) => (
                   <div
                     key={d.id}
                     className="flex flex-col text-center items-center gap-3"
@@ -241,9 +277,9 @@ export default function TvDetailPage() {
 
               <div className="flex">
                 {data.credits?.crew
-                  ?.filter((c: any) => c.department === "Writing")
+                  ?.filter((c) => c.department === "Writing")
                   .slice(0, 3)
-                  .map((w: any, index: number) => (
+                  .map((w, index: number) => (
                     <div
                       key={`${w.credit_id || w.id}-${index}`}
                       className="flex flex-col mx-1 p-2 items-center justify-center text-center gap-2 "
@@ -269,9 +305,8 @@ export default function TvDetailPage() {
                     </div>
                   ))}
 
-                {data.credits?.crew?.filter(
-                  (c: any) => c.department === "Writing",
-                ).length === 0 && (
+                {data.credits?.crew?.filter((c) => c.department === "Writing")
+                  .length === 0 && (
                   <p className="text-xs text-gray-500">No writers listed</p>
                 )}
               </div>
@@ -285,7 +320,7 @@ export default function TvDetailPage() {
             </h3>
 
             <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
-              {data.credits?.cast?.slice(0, 12).map((actor: any) => (
+              {data.credits?.cast?.slice(0, 12).map((actor) => (
                 <div key={actor.id} className="min-w-[100px] text-center">
                   {/* IMAGE WRAPPER */}
                   <div className="relative w-25 h-25 mx-auto">
@@ -339,7 +374,7 @@ export default function TvDetailPage() {
         </h2>
 
         <div className="flex gap-4 overflow-x-auto pb-3 no-scrollbar">
-          {data.similar?.results?.slice(0, 10).map((movie: any) => (
+          {data.similar?.results?.slice(0, 10).map((movie) => (
             <div key={movie.id} className="min-w-[220px] group cursor-pointer">
               {/* POSTER */}
               <div className="relative w-full h-[300px] rounded-xl overflow-hidden border border-white/10">
