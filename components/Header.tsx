@@ -7,10 +7,13 @@ import DarkModeSwitch from "./DarkModeSwitch";
 import { usePathname } from "next/navigation";
 const Header = () => {
   const pathname = usePathname();
-  console.log(pathname);
+
+  const isMovie = pathname.includes("/movies");
+  const isTv = pathname.includes("/tv_shows");
+
   return (
     <div
-      className={`absolute z-20 top-0 flex items-center justify-between p-3 px-20 mx-auto w-full py-5 ${pathname === "/about" ? "bg-[#111111]" : "bg-transparent"}  text-white`}
+      className={`absolute z-20 top-0 flex items-center justify-between p-3 px-20 mx-auto w-full py-5 bg-transparent ${isMovie || isTv || pathname === "/about" ? "text-cyan-500" : "text-white"} `}
     >
       <div className="flex items-center gap-5">
         <Link href={"/"} className="flex items-center gap-1">

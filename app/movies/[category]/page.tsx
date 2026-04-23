@@ -2,7 +2,7 @@
 
 import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import Loading from "@/components/Loading";
 import MovieCard from "@/components/MovieCard";
 
@@ -26,6 +26,7 @@ export default function MoviesPage() {
   const params = useParams();
   const category = params.category as string;
   const router = useRouter();
+  const pathname = usePathname();
 
   const [movies, setMovies] = useState<MovieItem[]>([]);
   const [search, setSearch] = useState("");
@@ -84,30 +85,40 @@ export default function MoviesPage() {
   );
 
   return (
-    <div>
-      <Navbar />
+    <div className="relative">
+      <div className="pt-19">
+        <Navbar />
+      </div>
 
-      <h1 className="text-center text-xl font-bold capitalize">
+      <h1 className="text-[45px] capitalize tracking-[3px] font-bold  text-center my-3">
         {category?.toString().replace("_", " ")}
       </h1>
 
       {/* ✅ DROPDOWN */}
-      <div className="flex justify-center mt-4">
+      <div className="absolute right-7 top-60 flex justify-center">
         <select
           value={category}
           onChange={(e) => handleChange(e.target.value)}
           className="p-2 border rounded"
         >
-          <option value="trending">Trending</option>
-          <option value="top_rated">Top Rated</option>
-          <option value="now_playing">Now Playing</option>
-          <option value="upcoming">Upcoming</option>
+          <option value="trending" className="bg-white text-black">
+            Trending
+          </option>
+          <option value="top_rated" className="bg-white text-black">
+            Top Rated
+          </option>
+          <option value="now_playing" className="bg-white text-black">
+            Now Playing
+          </option>
+          <option value="upcoming" className="bg-white text-black">
+            Upcoming
+          </option>
         </select>
       </div>
 
       {/* SEARCH */}
       <input
-        className="border p-2 w-1/2 mx-auto block mt-4"
+        className="bg-white text-black rounded-full w-1/2 mx-auto block mt-4 mb-5 shadow-[1px_1px_4px_rgba(0,0,0,0.5)] p-3 px-5"
         placeholder="Search movies..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
@@ -116,7 +127,7 @@ export default function MoviesPage() {
       {loading ? (
         <Loading />
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 w-[95%] mx-auto">
           {filtered.map((item) => (
             <MovieCard
               key={item.id}

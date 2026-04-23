@@ -94,7 +94,7 @@ export default function Home() {
       <HeroSection movies={movies} setCategory={setCategory} />
       <Navbar />
       {/* ✅ Dynamic title */}
-      <h1 className="text-xl font-bold mb-4 text-center">
+      <h1 className="text-[45px] tracking-[3px] font-extralight  text-center my-3">
         {category === "movie"
           ? "Movies"
           : category === "tv"
@@ -109,7 +109,7 @@ export default function Home() {
             placeholder="Search..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-1/2 p-2 border rounded border-b-amber-200"
+            className="w-1/2 shadow-[1px_1px_4px_rgba(0,0,0,0.5)] p-3 bg-white text-black mb-5 rounded-full px-5"
           />
         </div>
 

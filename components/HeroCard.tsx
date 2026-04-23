@@ -1,7 +1,13 @@
 import Image from "next/image";
 import React from "react";
 
-const HeroCard = ({ movie }) => {
+type Movie = {
+  title?: string;
+  overview?: string;
+  backdrop_path?: string;
+};
+
+const HeroCard = ({ movie }: { movie: Movie }) => {
   return (
     <div className="relative w-full h-full overflow-hidden">
       <Image

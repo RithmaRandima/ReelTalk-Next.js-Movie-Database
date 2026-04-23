@@ -84,30 +84,40 @@ export default function TvShowsPage() {
   );
 
   return (
-    <div>
-      <Navbar />
+    <div className="relative">
+      <div className="pt-19">
+        <Navbar />
+      </div>
 
-      <h1 className="text-center text-xl font-bold capitalize">
+      <h1 className="text-[45px] capitalize tracking-[3px] font-bold  text-center my-3">
         {category?.toString().replace("_", " ")}
       </h1>
 
       {/* ✅ DROPDOWN */}
-      <div className="flex justify-center mt-4">
+      <div className="absolute right-7 top-60 flex justify-center">
         <select
           value={category}
           onChange={(e) => handleChange(e.target.value)}
           className="p-2 border rounded"
         >
-          <option value="trending">Trending</option>
-          <option value="top_rated">Top Rated</option>
-          <option value="airing_today">Airing Today</option>
-          <option value="on_the_air">On The Air</option>
+          <option value="trending" className="bg-white text-black">
+            Trending
+          </option>
+          <option value="top_rated" className="bg-white text-black">
+            Top Rated
+          </option>
+          <option value="airing_today" className="bg-white text-black">
+            Airing Today
+          </option>
+          <option value="on_the_air" className="bg-white text-black">
+            On The Air
+          </option>
         </select>
       </div>
 
       {/* SEARCH */}
       <input
-        className="border p-2 w-1/2 mx-auto block mt-4"
+        className="bg-white text-black rounded-full w-1/2 mx-auto block mt-4 mb-5 shadow-[1px_1px_4px_rgba(0,0,0,0.5)] p-3 px-5"
         placeholder="Search TV shows..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
@@ -116,7 +126,7 @@ export default function TvShowsPage() {
       {loading ? (
         <Loading />
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 w-[95%] mx-auto">
           {filtered.map((item) => (
             <MovieCard
               key={item.id}
