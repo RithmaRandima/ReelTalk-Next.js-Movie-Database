@@ -30,7 +30,6 @@ export default function RootLayout({
       <body className=" min-h-screen transition-colors duration-300">
         <Providers>
           <Header />
-          <Navbar />
           {children}
         </Providers>
       </body>

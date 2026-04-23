@@ -14,9 +14,6 @@ const DarkModeSwitch = () => {
 
   if (!mounted) return null;
 
-  console.log(resolvedTheme);
-  console.log(mounted);
-
   return (
     <div>
       {resolvedTheme === "dark" ? (
