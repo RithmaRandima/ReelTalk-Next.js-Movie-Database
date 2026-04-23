@@ -15,7 +15,9 @@ const MenuItem = ({ title, address, Icon }: MenuItemProps) => {
       className="flex items-center gap-2 hover:text-cyan-500"
     >
       <Icon className="text-[20px] sm:hidden" />
-      <p className="hidden uppercase sm:inline text-sm">{title}</p>
+      <p className="hidden uppercase sm:inline text-[14px] font-semibold">
+        {title}
+      </p>
     </Link>
   );
 };

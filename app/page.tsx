@@ -4,11 +4,27 @@ import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Loading from "@/components/Loading";
+import MovieCard from "@/components/MovieCard";
+import HeroSection from "@/components/HeroSection";
 
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
+type MovieItem = {
+  id: number;
+  title?: string;
+  name?: string;
+  original_name?: string;
+  original_title?: string;
+  first_air_date?: string;
+  release_date?: string;
+  vote_average?: number;
+  poster_path?: string;
+  original_language?: string;
+  media_type?: "movie" | "tv";
+};
+
 export default function Home() {
-  const [movies, setMovies] = useState<any[]>([]);
+  const [movies, setMovies] = useState<MovieItem[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -54,6 +70,8 @@ export default function Home() {
     fetchData();
   }, [category, page]);
 
+  console.log(movies[2]);
+
   // ✅ FIXED: support "all"
   const setCategory = (newCategory: string) => {
     setPage(1);
@@ -73,8 +91,8 @@ export default function Home() {
 
   return (
     <div>
-      <Navbar setCategory={setCategory} />
-
+      <HeroSection movies={movies} setCategory={setCategory} />
+      <Navbar />
       {/* ✅ Dynamic title */}
       <h1 className="text-xl font-bold mb-4 text-center">
         {category === "movie"
@@ -83,56 +101,67 @@ export default function Home() {
             ? "TV Series"
             : "Trending This Week"}
       </h1>
+      <div className=" mx-auto w-[85%] p-5">
+        {/* 🔍 SEARCH */}
+        <div className="flex justify-center mb-4">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-1/2 p-2 border rounded border-b-amber-200"
+          />
+        </div>
 
-      {/* 🔍 SEARCH */}
-      <div className="flex justify-center mb-4">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-1/2 p-2 border rounded border-b-amber-200"
-        />
-      </div>
-
-      {/* 📄 CONTENT */}
-      {loading ? (
-        <Loading />
-      ) : (
-        <>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {filteredMovies.map((item: any) => (
-              <div key={item.id} className="text-sm">
-                <img
-                  className="rounded"
-                  src={`https://image.tmdb.org/t/p/w300${item.poster_path}`}
-                  alt={item.title || item.name}
+        {/* 📄 CONTENT */}
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 ">
+              {filteredMovies.map((item) => (
+                <MovieCard
+                  key={item.id}
+                  item={item}
+                  type={
+                    category === "all"
+                      ? item.media_type === "tv"
+                        ? "tv_shows"
+                        : "movies"
+                      : category === "tv"
+                        ? "tv_shows"
+                        : "movies"
+                  }
+                  category={
+                    category === "all"
+                      ? "trending" // ✅ fallback category for homepage
+                      : "trending" // or whatever default you want
+                  }
                 />
-                <p className="mt-2">{item.title || item.name}</p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          {/* 🔥 PAGINATION */}
-          <div className="flex justify-center items-center gap-4 mt-6">
-            <button
-              onClick={() => setPage((p) => Math.max(p - 1, 1))}
-              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-            >
-              Previous
-            </button>
+            {/* 🔥 PAGINATION */}
+            <div className="flex justify-center items-center gap-4 mt-6">
+              <button
+                onClick={() => setPage((p) => Math.max(p - 1, 1))}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                Previous
+              </button>
 
-            <span className="font-bold">Page {page}</span>
+              <span className="font-bold">Page {page}</span>
 
-            <button
-              onClick={() => setPage((p) => p + 1)}
-              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-            >
-              Next
-            </button>
-          </div>
-        </>
-      )}
+              <button
+                onClick={() => setPage((p) => p + 1)}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                Next
+              </button>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }

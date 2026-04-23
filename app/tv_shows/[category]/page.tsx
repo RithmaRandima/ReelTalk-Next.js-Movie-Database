@@ -4,14 +4,30 @@ import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Loading from "@/components/Loading";
+import MovieCard from "@/components/MovieCard";
 
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
+type MovieItem = {
+  id: number;
+  title?: string;
+  name?: string;
+  original_name?: string;
+  original_title?: string;
+  first_air_date?: string;
+  release_date?: string;
+  vote_average?: number;
+  poster_path?: string;
+  original_language?: string;
+  media_type?: "movie" | "tv";
+};
+
 export default function TvShowsPage() {
-  const { category } = useParams();
+  const params = useParams();
+  const category = params.category as string;
   const router = useRouter();
 
-  const [shows, setShows] = useState<any[]>([]);
+  const [shows, setShows] = useState<MovieItem[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -101,15 +117,13 @@ export default function TvShowsPage() {
         <Loading />
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
-          {filtered.map((s) => (
-            <div key={s.id}>
-              <img
-                src={`https://image.tmdb.org/t/p/w300${s.poster_path}`}
-                className="rounded"
-                alt={s.name}
-              />
-              <p>{s.name}</p>
-            </div>
+          {filtered.map((item) => (
+            <MovieCard
+              key={item.id}
+              item={item}
+              type="tv_shows"
+              category={category}
+            />
           ))}
         </div>
       )}

@@ -3,7 +3,7 @@ import { FaFilm, FaStar, FaUsers, FaPlayCircle } from "react-icons/fa";
 
 const About = () => {
   return (
-    <div className="max-w-5xl mx-auto px-4 py-12 space-y-10">
+    <div className="max-w-5xl mx-auto px-4 py-12 space-y-10 pt-[120px]">
       {/* Header */}
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-wide">About This App</h1>
